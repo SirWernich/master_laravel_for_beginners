@@ -118,3 +118,7 @@ Route::prefix('/fun')->name('fun.')->group(function () use ($posts) {
         return response()->download(public_path('/daniel.jpg'), 'picture.jpg');
     })->name('download');
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
