@@ -30,4 +30,11 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    public function johnDoe() {
+        return $this->state([
+            'name' => 'John Doe',
+            'email' => 'john@email.com',
+        ]);
+    }
 }
