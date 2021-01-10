@@ -15,4 +15,16 @@ class BlogPost extends Model
     {
         return $this->hasMany('App\Models\Comment');
     }
+
+    public static function boot() {
+        parent::boot();
+
+        // available events:
+        // retrieved, creating, created, updating, updated, saving, saved, deleting,
+        // deleted, restoring, restored, and replicating.
+        static::deleting(function(BlogPost $post) {
+            $post->comments()
+                ->delete();
+        } );
+    }
 }
