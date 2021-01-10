@@ -22,9 +22,9 @@ class BlogPost extends Model
         // available events:
         // retrieved, creating, created, updating, updated, saving, saved, deleting,
         // deleted, restoring, restored, and replicating.
-        static::deleting(function(BlogPost $post) {
-            $post->comments()
-                ->delete();
-        } );
+        // static::deleting(function(BlogPost $post) {
+        //     $post->comments()
+        //         ->delete();
+        // } );
     }
 }
