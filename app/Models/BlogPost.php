@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogPost extends Model
 {
     protected $fillable = ['title', 'content'];
+
+    use SoftDeletes;
 
     use HasFactory;
 
@@ -22,9 +25,14 @@ class BlogPost extends Model
         // available events:
         // retrieved, creating, created, updating, updated, saving, saved, deleting,
         // deleted, restoring, restored, and replicating.
-        // static::deleting(function(BlogPost $post) {
-        //     $post->comments()
-        //         ->delete();
-        // } );
+        static::deleting(function(BlogPost $post) {
+            $post->comments()
+                ->delete();
+        } );
+
+        static::restoring(function(BlogPost $post) {
+            $post->comments()
+                ->restore();
+        } );
     }
 }

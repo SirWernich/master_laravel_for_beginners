@@ -107,10 +107,7 @@ class PostTest extends TestCase
 
         $this->assertEquals(session('status'), 'blog post updated');
 
-        $this->assertDatabaseMissing('blog_posts', [
-            'title' => 'New Title',
-            'content' => 'New post content'
-        ]);
+        $this->assertDatabaseMissing('blog_posts', $post->getAttributes());
         $this->assertDatabaseHas('blog_posts', [
             'title' => 'New Title, but edited',
             'content' => 'New post content, but also edited'
@@ -133,6 +130,8 @@ class PostTest extends TestCase
             ->assertSessionHas('status');
 
         $this->assertEquals(session('status'), 'blog post deleted');
+        // $this->assertDatabaseMissing('blog_posts', $post->getAttributes());
+        $this->assertSoftDeleted('blog_posts', $post->getAttributes());
     }
 
     private function createDummyBlogPost()
