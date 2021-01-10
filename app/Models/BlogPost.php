@@ -16,23 +16,29 @@ class BlogPost extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment');
+        return $this->hasMany(\App\Models\Comment::class);
     }
 
-    public static function boot() {
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+    public static function boot()
+    {
         parent::boot();
 
         // available events:
         // retrieved, creating, created, updating, updated, saving, saved, deleting,
         // deleted, restoring, restored, and replicating.
-        static::deleting(function(BlogPost $post) {
+        static::deleting(function (BlogPost $post) {
             $post->comments()
                 ->delete();
-        } );
+        });
 
-        static::restoring(function(BlogPost $post) {
+        static::restoring(function (BlogPost $post) {
             $post->comments()
                 ->restore();
-        } );
+        });
     }
 }

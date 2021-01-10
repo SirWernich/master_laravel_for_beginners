@@ -29,7 +29,7 @@
 
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
-    <p>Added {{ $post->created_at->diffForHumans() }}
+    <p>Added {{ $post->created_at->diffForHumans() }}</p>
 
     @if (now()->diffInMinutes($post->created_at) < 5)
 
