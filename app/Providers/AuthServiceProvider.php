@@ -34,5 +34,23 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('delete-post', function(User $user, BlogPost $post) {
             return $user->id === $post->user_id;
         });
+
+        // "before" is always called before the others
+        Gate::before(function(User $user, $ability) {
+            if ($user->is_admin && in_array($ability, ['update-post'])) {
+                return true;
+            }
+
+            // don't return anything, that way it goes to the other gates
+        });
+
+        // "after" is always called after the others
+        Gate::after(function(User $user, $ability) {
+            if ($user->is_admin) {
+                return true;
+            }
+
+            // don't return anything, that way it goes to the other gates
+        });
     }
 }
