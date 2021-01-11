@@ -100,9 +100,10 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        if (Gate::denies('update-post', $post)) {
-            abort(403, 'you cannot edit posts you do not own');
-        }
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403, 'you cannot edit posts you do not own');
+        // }
+        $this->authorize('update-post', $post);
 
         return view('posts.edit', ['post' => $post]);
     }
@@ -118,9 +119,10 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        if (Gate::denies('update-post', $post)) {
-            abort(403, 'you cannot edit posts you do not own');
-        }
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403, 'you cannot edit posts you do not own');
+        // }
+        $this->authorize('update-post', $post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -141,6 +143,11 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('delete-post', $post)) {
+        //     abort(403, 'you cannot delete posts you do not own');
+        // }
+        $this->authorize('delete-post', $post);
 
         $post->delete();
 
