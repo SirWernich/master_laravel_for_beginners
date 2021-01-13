@@ -27,17 +27,21 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', function(User $user, BlogPost $post) {
-            return $user->id === $post->user_id;
-        });
+        // Gate::define('update-post', function(User $user, BlogPost $post) {
+        //     return $user->id === $post->user_id;
+        // });
 
-        Gate::define('delete-post', function(User $user, BlogPost $post) {
-            return $user->id === $post->user_id;
-        });
+        // Gate::define('delete-post', function(User $user, BlogPost $post) {
+        //     return $user->id === $post->user_id;
+        // });
+
+        // Gate::define('posts.update', '\App\Policies\BlogPostPolicy@update');
+        // use default naming in policy
+        Gate::resource('posts', \App\Policies\BlogPostPolicy::class);
 
         // "before" is always called before the others
         Gate::before(function(User $user, $ability) {
-            if ($user->is_admin && in_array($ability, ['update-post'])) {
+            if ($user->is_admin && in_array($ability, ['posts.update'])) {
                 return true;
             }
 

@@ -49,6 +49,8 @@ class PostsController extends Controller
      */
     public function create()
     {
+        $this->authorize('posts.create');
+
         return view('posts.create');
     }
 
@@ -103,7 +105,7 @@ class PostsController extends Controller
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'you cannot edit posts you do not own');
         // }
-        $this->authorize('update-post', $post);
+        $this->authorize('posts.update', $post);
 
         return view('posts.edit', ['post' => $post]);
     }
@@ -122,7 +124,7 @@ class PostsController extends Controller
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'you cannot edit posts you do not own');
         // }
-        $this->authorize('update-post', $post);
+        $this->authorize('posts.update', $post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -147,7 +149,7 @@ class PostsController extends Controller
         // if (Gate::denies('delete-post', $post)) {
         //     abort(403, 'you cannot delete posts you do not own');
         // }
-        $this->authorize('delete-post', $post);
+        $this->authorize('posts.delete', $post);
 
         $post->delete();
 
