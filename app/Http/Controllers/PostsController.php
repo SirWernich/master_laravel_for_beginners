@@ -49,7 +49,10 @@ class PostsController extends Controller
      */
     public function create()
     {
-        $this->authorize('posts.create');
+        // $this->authorize('posts.create');
+        // policy is registered for the BlogPost model, so by passing in the object, laravel
+        // will figure out which policy to go to
+        $this->authorize('create');
 
         return view('posts.create');
     }
@@ -105,7 +108,10 @@ class PostsController extends Controller
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'you cannot edit posts you do not own');
         // }
-        $this->authorize('posts.update', $post);
+
+        // $this->authorize('posts.update', $post);
+        // policy is registered for the BlogPost model
+        $this->authorize($post);
 
         return view('posts.edit', ['post' => $post]);
     }
@@ -124,7 +130,9 @@ class PostsController extends Controller
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'you cannot edit posts you do not own');
         // }
-        $this->authorize('posts.update', $post);
+        // $this->authorize('posts.update', $post);
+        // policy is registered for the BlogPost model
+        $this->authorize($post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -149,7 +157,9 @@ class PostsController extends Controller
         // if (Gate::denies('delete-post', $post)) {
         //     abort(403, 'you cannot delete posts you do not own');
         // }
-        $this->authorize('posts.delete', $post);
+        // $this->authorize('posts.delete', $post);
+        // policy is registered for the BlogPost model
+        $this->authorize($post);
 
         $post->delete();
 

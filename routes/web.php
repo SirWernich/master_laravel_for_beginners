@@ -54,6 +54,10 @@ Route::get('/', [HomeController::class, 'home'])
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('home.contact');
 
+Route::get('/secret', [HomeController::class, 'secret'])
+    ->name('secret')
+    ->middleware('can:home.secret');
+
 Route::get('/single', AboutController::class);
 
 // // Route::get('/home/{id?}/{name?}', function($the_id = 0, $the_name = 'no name') {
