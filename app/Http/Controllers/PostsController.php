@@ -52,7 +52,8 @@ class PostsController extends Controller
         // $this->authorize('posts.create');
         // policy is registered for the BlogPost model, so by passing in the object, laravel
         // will figure out which policy to go to
-        $this->authorize('create');
+        // $this->authorize('create');
+        $this->authorize('create', \App\Models\BlogPost::class);
 
         return view('posts.create');
     }
