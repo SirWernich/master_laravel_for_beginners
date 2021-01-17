@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogPost extends Model
 {
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'user_id'];
 
     use SoftDeletes;
 
@@ -27,6 +28,8 @@ class BlogPost extends Model
     public static function boot()
     {
         parent::boot();
+
+        static::addGlobalScope(new LatestScope());
 
         // available events:
         // retrieved, creating, created, updating, updated, saving, saved, deleting,
