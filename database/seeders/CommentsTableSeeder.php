@@ -20,7 +20,7 @@ class CommentsTableSeeder extends Seeder
             return;
         }
 
-        $comments_count = (int)$this->command->ask('How many comments would you like?', 50);
+        $comments_count = (int)$this->command->ask('How many comments would you like?', 150);
 
         \App\Models\Comment::factory($comments_count)
             ->make()
