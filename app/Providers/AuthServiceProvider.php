@@ -46,7 +46,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // // "before" is always called before the others
         Gate::before(function(User $user, $ability) {
-            if ($user->is_admin && in_array($ability, ['update'])) {
+            if ($user->is_admin && in_array($ability, ['update', 'delete'])) {
                 return true;
             }
 

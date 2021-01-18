@@ -5,7 +5,20 @@
     <div style="background: silver">{{ $post->id }}.{{ $post['title'] }}</div>
 @endif --}}
 <h3>
-    <a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a>
+    @if ($post->trashed())
+        <del>
+    @endif
+
+    <a
+        class="{{ $post->trashed() ? 'text-muted' : '' }}"
+        href="{{ route('posts.show', ['post' => $post->id]) }}"
+    >
+        {{ $post->title }}
+    </a>
+
+    @if ($post->trashed())
+        </del>
+    @endif
 </h3>
 
 <p class="text-muted">
@@ -31,11 +44,13 @@
         <p>you cannot delete this post</p>
     @endcannot --}}
 
-    @can('delete', $post)
+    @if (!$post->trashed())
+        @can('delete', $post)
         <form class="d-inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="post">
             @csrf
             @method('delete')
             <input type="submit" value="delete" class="btn btn-primary">
         </form>
-    @endcan
+        @endcan
+    @endif
 </div>
