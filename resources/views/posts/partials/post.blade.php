@@ -25,6 +25,9 @@
 ])
 @endupdated
 
+@tags(['tags' => $post->tags])
+@endtags
+
 @if ($post->comments_count)
     <p>
         {{ $post->comments_count }} {{ $post->comments_count == 1 ? 'comment' : 'comments' }}

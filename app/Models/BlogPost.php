@@ -28,6 +28,13 @@ class BlogPost extends Model
         return $this->belongsTo(\App\Models\User::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(\App\Models\Tag::class)
+            ->withTimestamps()
+            ->as('tagged');
+    }
+
     public function scopeLatest(Builder $builder)
     {
         return $builder->orderBy(static::CREATED_AT, 'desc');
@@ -60,7 +67,7 @@ class BlogPost extends Model
                 ->restore();
         });
 
-        static::updating(function( BlogPost $post) {
+        static::updating(function (BlogPost $post) {
             Cache::forget("blog-post-{$post->id}");
         });
     }
