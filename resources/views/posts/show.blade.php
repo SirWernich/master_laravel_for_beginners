@@ -27,49 +27,56 @@
 
 @section('content')
 
-    <h1>
-        {{ $post->title }}
+<div class="row">
+    <div class="col-8">
+        <h1>
+            {{ $post->title }}
 
-        @badge([
-            'type' => 'success',
-            'show' => now()->diffInMinutes($post->created_at) < 60
-        ])
-            New!
-        @endbadge
+            @badge([
+                'type' => 'success',
+                'show' => now()->diffInMinutes($post->created_at) < 60
+            ])
+                New!
+            @endbadge
 
-    </h1>
-
-    @updated([
-        'date' => $post->created_at,
-        'name' => $post->user->name
-    ])
-    @endupdated
-
-    @updated([
-        'date' => $post->updated_at,
-    ])
-        Updated
-    @endupdated
-
-    @tags(['tags' => $post->tags])
-    @endtags
-
-    <p>Currently read by {{ $counter }} people</p>
-
-    <h4>Comments</h4>
-    @forelse ($post->comments as $comment)
-        <p>{{ $comment->content }}</p>
+        </h1>
 
         @updated([
-            'date' => $comment->created_at
+            'date' => $post->created_at,
+            'name' => $post->user->name
         ])
         @endupdated
 
-        @if (!$loop->last)
-            <hr>
-        @endif
-    @empty
-        <p>No comments yet</p>
-    @endforelse
+        @updated([
+            'date' => $post->updated_at,
+        ])
+            Updated
+        @endupdated
 
+        @tags(['tags' => $post->tags])
+        @endtags
+
+        <p>Currently read by {{ $counter }} people</p>
+
+        <h4>Comments</h4>
+        @forelse ($post->comments as $comment)
+            <p>{{ $comment->content }}</p>
+
+            @updated([
+                'date' => $comment->created_at
+            ])
+            @endupdated
+
+            @if (!$loop->last)
+                <hr>
+            @endif
+        @empty
+            <p>No comments yet</p>
+        @endforelse
+
+    </div>
+    <div class="col-4">
+        @include('posts._activity')
+    </div>
+</div>
 @endsection
