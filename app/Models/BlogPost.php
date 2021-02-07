@@ -45,6 +45,13 @@ class BlogPost extends Model
         return $query->withCount('comments')->orderBy('comments_count', 'desc');
     }
 
+    public function scopeLatestsWithRelationships(Builder $query)
+    {
+        return $query->latest()
+            ->withCount('comments')
+            ->with(['user', 'tags']);
+    }
+
     public static function boot()
     {
         // add before the boot method call to prevent "SoftDeletes" override
@@ -60,6 +67,7 @@ class BlogPost extends Model
         static::deleting(function (BlogPost $post) {
             $post->comments()
                 ->delete();
+            Cache::tags('blog-post')->forget("blog-post-{$post->id}");
         });
 
         static::restoring(function (BlogPost $post) {
@@ -68,7 +76,7 @@ class BlogPost extends Model
         });
 
         static::updating(function (BlogPost $post) {
-            Cache::forget("blog-post-{$post->id}");
+            Cache::tags('blog-post')->forget("blog-post-{$post->id}");
         });
     }
 }
