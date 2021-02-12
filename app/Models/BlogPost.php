@@ -35,6 +35,11 @@ class BlogPost extends Model
             ->as('tagged');
     }
 
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
+
     public function scopeLatest(Builder $builder)
     {
         return $builder->orderBy(static::CREATED_AT, 'desc');

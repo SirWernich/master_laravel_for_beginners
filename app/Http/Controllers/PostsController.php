@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+
 // use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
@@ -68,6 +71,45 @@ class PostsController extends Controller
         // $post->save();
 
         $post = BlogPost::create($validated);
+
+        // $hasFile = $request->hasFile('thumbnail');
+
+        // // if ($hasFile) {
+        // //     $file = $request->file('thumbnail');
+        // //     dump($file);
+        // //     dump($file->getClientMimeType());
+        // //     dump($file->getClientOriginalName());
+        // //     dump($file->getClientOriginalExtension());
+        // // }
+
+        // if ($hasFile) {
+        //     $file = $request->file('thumbnail');
+
+        //     $fileName = $file->store('thumbnails');
+
+        //     // set APP_URL value in .env file
+        //     dump(Storage::url($fileName));
+
+        //     // dump($file->store('thumbnails'));
+        //     // shortcut of this:
+        //     // dump(Storage::disk('public')->put('thumbnails', $file));
+
+        //     // specifying a filename
+        //     // dump($file->storeAs('thumbnails', $post->id . '.' . $file->guessClientExtension()));
+        //     // dump(Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessClientExtension()));
+
+        //     // store using different driver (gives error 🙁)
+        //     // $fileName = Storage::disk('local')->put('thumbnails', $file, $post->id . '.' . $file->guessExtension());
+        //     // dump(Storage::disk('local')->url($fileName));
+        // }
+        // die;
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $post->image()->save(
+                Image::create(['path' => $path])
+            );
+        }
 
         $request
             ->session()
@@ -183,6 +225,22 @@ class PostsController extends Controller
 
         $validated = $request->validated();
         $post->fill($validated);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+
+            if ($post->image) {
+                Storage::delete($post->image->path);
+
+                $post->image->path = $path;
+                $post->image->save();
+            } else {
+                $post->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+        }
+
         $post->save();
 
         $request->session()->flash('status', 'blog post updated');

@@ -29,17 +29,30 @@
 
 <div class="row">
     <div class="col-8">
-        <h1>
-            {{ $post->title }}
+        @if ($post->image)
+            <div style="background-image: url(' {{ $post->image->url() }}'); min-height: 500px; color: white; text-align: center; background-attachment: fixed;">
+                <h1 style="padding-top: 100px; text-shaddow: 1px solid #000;">
+        @else
+                <h1>
+        @endif
+                    {{ $post->title }}
 
-            @badge([
-                'type' => 'success',
-                'show' => now()->diffInMinutes($post->created_at) < 60
-            ])
-                New!
-            @endbadge
+                    @badge([
+                        'type' => 'success',
+                        'show' => now()->diffInMinutes($post->created_at) < 60
+                    ])
+                        New!
+                    @endbadge
 
-        </h1>
+
+        @if ($post->image)
+                </h1>
+            </div>
+        @else
+            </h1>
+        @endif
+
+        <p>{{ $post->content }}</p>
 
         @updated([
             'date' => $post->created_at,

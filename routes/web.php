@@ -44,7 +44,7 @@ $posts = [
 // // })->name('home.index');
 
 // Route::view('/', 'home.index')->name('home.index');
-Route::get('/', [HomeController::class, 'home'])
+Route::get('/', [PostsController::class, 'index'])
     ->name('home.index');
     // ->middleware('auth');
 
