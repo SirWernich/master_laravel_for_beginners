@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Comment::class);
     }
 
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
     public function scopeWithMostBlogPosts(Builder $query)
     {
         return $query->withCount('blogPosts')
