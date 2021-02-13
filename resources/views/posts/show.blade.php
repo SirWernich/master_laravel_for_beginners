@@ -56,7 +56,8 @@
 
         @updated([
             'date' => $post->created_at,
-            'name' => $post->user->name
+            'name' => $post->user->name,
+            'userId' => $post->user->id
         ])
         @endupdated
 
@@ -80,7 +81,8 @@
 
             @updated([
                 'date' => $comment->created_at,
-                'name' => $comment->user->name
+                'name' => $comment->user->name,
+                'userId' => $post->user->id
             ])
             @endupdated
 
