@@ -74,24 +74,16 @@
 
         <h4>Comments</h4>
 
-        @include('comments._form')
+        @commentForm([
+            'route' => route('posts.comments.store', [ 'post' => $post->id ])
+        ])
+        @endcommentForm
 
-        @forelse ($post->comments as $comment)
-            <p>{{ $comment->content }}</p>
-
-            @updated([
-                'date' => $comment->created_at,
-                'name' => $comment->user->name,
-                'userId' => $post->user->id
-            ])
-            @endupdated
-
-            @if (!$loop->last)
-                <hr>
-            @endif
-        @empty
-            <p>No comments yet</p>
-        @endforelse
+        @commentList([
+            'comments' => $post->comments,
+            'userId' => $post->user->id
+        ])
+        @endcommentList
 
     </div>
     <div class="col-4">

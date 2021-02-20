@@ -8,7 +8,19 @@
         </div>
         <div class="col-8">
             <h3>{{ $user->name }}</h3>
+
+            @commentForm([
+                'route' => route('users.comments.store', [ 'user' => $user->id ])
+            ])
+            @endcommentForm
+
+            @commentList([
+                'comments' => $user->commentsOn,
+                'userId' => $user->id
+            ])
+            @endcommentList
         </div>
+
     </div>
 
 @endsection
