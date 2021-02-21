@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
+use App\Traits\Taggable;
 // use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,9 +15,7 @@ class BlogPost extends Model
 {
     protected $fillable = ['title', 'content', 'user_id'];
 
-    use SoftDeletes;
-
-    use HasFactory;
+    use SoftDeletes, HasFactory, Taggable;
 
     public function comments()
     {
@@ -26,13 +25,6 @@ class BlogPost extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class);
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(\App\Models\Tag::class)
-            ->withTimestamps()
-            ->as('tagged');
     }
 
     public function image()
