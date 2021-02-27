@@ -23,7 +23,7 @@ class PostCommentController extends Controller
         ]);
 
         // Mail::to($post->user)->send(new CommentPosted($comment));
-        Mail::to($post->user)->send(new CommentPostedMarkdown());
+        Mail::to($post->user)->send(new CommentPostedMarkdown($comment));
 
         return redirect()->back()
             ->withComment('Comment added');

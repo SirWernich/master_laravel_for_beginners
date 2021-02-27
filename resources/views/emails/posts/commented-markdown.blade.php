@@ -1,11 +1,24 @@
 @component('mail::message')
-# Introduction
+# Comment posted on blog post
 
-Hello from markdown!
+Hi, {{ $comment->commentable->user->name }}
 
-@component('mail::button', ['url' => ''])
-Button Text
+Someone has commented on your blog post:<br>
+
+{{ $comment->commentable->title }}
+
+@component('mail::button', ['url' => route('posts.show', ['post' => $comment->commentable->id])])
+View blog post
 @endcomponent
+
+@component('mail::button', ['url' => route('users.show', ['user' => $comment->user->id])])
+View {{ $comment->user->name }} profile
+@endcomponent
+
+@component('mail::panel')
+{{ $comment->content }}
+@endcomponent
+
 
 Thanks,<br>
 {{ config('app.name') }}
