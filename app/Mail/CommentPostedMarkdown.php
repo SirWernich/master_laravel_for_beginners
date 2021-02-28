@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 // php artisan make:mail CommentPostedMarkdown --markdown=emails.posts.commented-markdown
 // publish components:
 // php artisan vendor:publish --tag=laravel-mail
-class CommentPostedMarkdown extends Mailable
+class CommentPostedMarkdown extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
