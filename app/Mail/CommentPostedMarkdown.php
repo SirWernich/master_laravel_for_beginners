@@ -34,6 +34,8 @@ class CommentPostedMarkdown extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        // breaking change! no import! (making queue fail manually)
+        // $post = new BlogPost();
         $subject = "Comment was posted on: {$this->comment->commentable->title}";
 
         return $this->subject($subject)

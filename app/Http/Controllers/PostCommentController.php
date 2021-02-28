@@ -30,16 +30,16 @@ class PostCommentController extends Controller
         // );
 
         // queue
-        // Mail::to($post->user)->queue(
-        //     new CommentPostedMarkdown($comment)
-        // );
-
-        // queue item to be sent later
-        $when = now()->addMinutes(1);
-        Mail::to($post->user)->later(
-            $when,
+        Mail::to($post->user)->queue(
             new CommentPostedMarkdown($comment)
         );
+
+        // queue item to be sent later
+        // $when = now()->addMinutes(1);
+        // Mail::to($post->user)->later(
+        //     $when,
+        //     new CommentPostedMarkdown($comment)
+        // );
 
         return redirect()->back()
             ->withComment('Comment added');
