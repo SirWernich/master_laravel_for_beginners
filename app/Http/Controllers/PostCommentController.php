@@ -36,9 +36,11 @@ class PostCommentController extends Controller
         //     new CommentPostedMarkdown($comment)
         // );
 
-        ThrottledMail::dispatch(new CommentPostedMarkdown($comment), $post->user);
+        ThrottledMail::dispatch(new CommentPostedMarkdown($comment), $post->user)
+            ->onQueue('high');
 
-        NotifyUsersPostWasCommented::dispatch($comment);
+        NotifyUsersPostWasCommented::dispatch($comment)
+            ->onQueue('low');
 
         // queue item to be sent later
         // $when = now()->addMinutes(1);

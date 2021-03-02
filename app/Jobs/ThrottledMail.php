@@ -18,6 +18,8 @@ class ThrottledMail implements ShouldQueue
 
     public $mail;
     public $user;
+    public $tries = 5;  // override the --tries=3 on "php artisan queue:work --tries=3"
+    public $timeout = 30;
 
     /**
      * Create a new job instance.
