@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
 use App\Traits\Taggable;
-// use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Cache;
 
 class BlogPost extends Model
 {
@@ -55,25 +53,5 @@ class BlogPost extends Model
         static::addGlobalScope(new DeletedAdminScope());
 
         parent::boot();
-
-        // static::addGlobalScope(new LatestScope());
-
-        // available events:
-        // retrieved, creating, created, updating, updated, saving, saved, deleting,
-        // deleted, restoring, restored, and replicating.
-        static::deleting(function (BlogPost $post) {
-            $post->comments()
-                ->delete();
-            Cache::tags('blog-post')->forget("blog-post-{$post->id}");
-        });
-
-        static::restoring(function (BlogPost $post) {
-            $post->comments()
-                ->restore();
-        });
-
-        static::updating(function (BlogPost $post) {
-            Cache::tags('blog-post')->forget("blog-post-{$post->id}");
-        });
     }
 }
