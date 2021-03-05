@@ -64,45 +64,7 @@ class PostsController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
 
-        // $post = new BlogPost();
-        // $post->title = $validated['title'];
-        // $post->content = $validated['content'];
-
-        // $post->save();
-
         $post = BlogPost::create($validated);
-
-        // $hasFile = $request->hasFile('thumbnail');
-
-        // // if ($hasFile) {
-        // //     $file = $request->file('thumbnail');
-        // //     dump($file);
-        // //     dump($file->getClientMimeType());
-        // //     dump($file->getClientOriginalName());
-        // //     dump($file->getClientOriginalExtension());
-        // // }
-
-        // if ($hasFile) {
-        //     $file = $request->file('thumbnail');
-
-        //     $fileName = $file->store('thumbnails');
-
-        //     // set APP_URL value in .env file
-        //     dump(Storage::url($fileName));
-
-        //     // dump($file->store('thumbnails'));
-        //     // shortcut of this:
-        //     // dump(Storage::disk('public')->put('thumbnails', $file));
-
-        //     // specifying a filename
-        //     // dump($file->storeAs('thumbnails', $post->id . '.' . $file->guessClientExtension()));
-        //     // dump(Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessClientExtension()));
-
-        //     // store using different driver (gives error 🙁)
-        //     // $fileName = Storage::disk('local')->put('thumbnails', $file, $post->id . '.' . $file->guessExtension());
-        //     // dump(Storage::disk('local')->url($fileName));
-        // }
-        // die;
 
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('thumbnails');
@@ -126,16 +88,6 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        // abort_if(!isset($this->posts[$id]), 404);
-
-        // return view('posts.show', [
-        //     'post' => BlogPost::with([
-        //         'comments' => function($query) {
-        //             return $query->latest();
-        //         }
-        //     ], )->findOrFail($id)
-        // ]);
-
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
             return BlogPost::with('comments')
                 ->with(['tags', 'user', 'comments.user']) // nested relationship
@@ -194,12 +146,6 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        // if (Gate::denies('update-post', $post)) {
-        //     abort(403, 'you cannot edit posts you do not own');
-        // }
-
-        // $this->authorize('posts.update', $post);
-        // policy is registered for the BlogPost model
         $this->authorize($post);
 
         return view('posts.edit', ['post' => $post]);
@@ -216,11 +162,6 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        // if (Gate::denies('update-post', $post)) {
-        //     abort(403, 'you cannot edit posts you do not own');
-        // }
-        // $this->authorize('posts.update', $post);
-        // policy is registered for the BlogPost model
         $this->authorize($post);
 
         $validated = $request->validated();
@@ -259,11 +200,6 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        // if (Gate::denies('delete-post', $post)) {
-        //     abort(403, 'you cannot delete posts you do not own');
-        // }
-        // $this->authorize('posts.delete', $post);
-        // policy is registered for the BlogPost model
         $this->authorize($post);
 
         $post->delete();

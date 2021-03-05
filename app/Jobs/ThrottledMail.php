@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Mail\Mailable;
@@ -16,10 +17,10 @@ class ThrottledMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $mail;
-    public $user;
-    public $tries = 5;  // override the --tries=3 on "php artisan queue:work --tries=3"
-    public $timeout = 30;
+    public Mailable $mail;
+    public User $user;
+    public $tries = 15;
+    public $timeout = 10;
 
     /**
      * Create a new job instance.
@@ -39,7 +40,7 @@ class ThrottledMail implements ShouldQueue
      */
     public function handle()
     {
-        Redis::throttle('mail-throttle')->allow(2)->every(12)->then(function () {
+        Redis::throttle('mail-throttle')->block(0)->allow(2)->every(12)->then(function () {
             Mail::to($this->user)->send($this->mail);
         }, function () {
             // Unable to obtain lock...
