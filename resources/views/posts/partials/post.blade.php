@@ -29,13 +29,14 @@
 @tags(['tags' => $post->tags])
 @endtags
 
-@if ($post->comments_count)
+{{-- @if ($post->comments_count)
     <p>
         {{ $post->comments_count }} {{ $post->comments_count == 1 ? 'comment' : 'comments' }}
     </p>
 @else
     <p>No comments</p>
-@endif
+@endif --}}
+{{ trans_choice('messages.comments', $post->comments_count) }}
 
 <div class="mb-3">
     @auth
