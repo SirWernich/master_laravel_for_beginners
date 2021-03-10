@@ -40,7 +40,11 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(['posts.index', 'posts.show'], ActivityComposer::class);
 
         $this->app->singleton(Counter::class, function($app) {
-            return new Counter(config('app.counter_timeout'));
+            return new Counter(
+                $app->make('Illuminate\Contracts\Cache\Factory'),
+                $app->make('Illuminate\Contracts\Session\Session'),
+                config('app.counter_timeout')
+            );
         });
 
         // $this->app->when(Counter::class)
