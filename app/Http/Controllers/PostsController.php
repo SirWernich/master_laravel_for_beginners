@@ -17,10 +17,13 @@ use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
-    public function __construct()
+    protected $counter;
+
+    public function __construct(Counter $counter)
     {
         $this->middleware('auth')
             ->only(['create', 'edit', 'destroy', 'store', 'update']);
+        $this->counter = $counter;
     }
 
     /**
@@ -98,11 +101,10 @@ class PostsController extends Controller
                 ->findOrFail($id);
         });
 
-        $counter = resolve(Counter::class);
-
+        dd($this->counter);
         return view('posts.show', [
             'post' => $blogPost,
-            'counter' => $counter->increment("blog-post-{$id}", ['blog-post'])
+            'counter' => $this->counter->increment("blog-post-{$id}", ['blog-post'])
         ]);
     }
 
