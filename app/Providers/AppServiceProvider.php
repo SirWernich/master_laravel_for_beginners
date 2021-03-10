@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\ViewComposers\ActivityComposer;
+use App\Services\Counter;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -37,5 +38,9 @@ class AppServiceProvider extends ServiceProvider
 
         // view()->composer('*', ActivityComposer::class);  // available in all views
         view()->composer(['posts.index', 'posts.show'], ActivityComposer::class);
+
+        $this->app->singleton(Counter::class, function($app) {
+            return new Counter(env('COUNTER_TIMEOUT'));
+        });
     }
 }

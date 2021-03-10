@@ -9,6 +9,8 @@
         <div class="col-8">
             <h3>{{ $user->name }}</h3>
 
+            <p>Currently viewed by {{ $counter }} other user(s)</p>
+
             @commentForm([
                 'route' => route('users.comments.store', [ 'user' => $user->id ])
             ])
