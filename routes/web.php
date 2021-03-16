@@ -132,7 +132,7 @@ Route::prefix('/fun')->name('fun.')->group(function () use ($posts) {
     })->name('download');
 });
 
-Route::resource('posts.comments', PostCommentController::class)->only(['store']);
+Route::resource('posts.comments', PostCommentController::class)->only(['index', 'store']);
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
 
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
