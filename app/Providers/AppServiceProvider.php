@@ -8,6 +8,8 @@ use App\Services\Counter;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Resources\Comment as CommentResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,5 +49,9 @@ class AppServiceProvider extends ServiceProvider
                 config('app.counter_timeout')
             );
         });
+
+        // if you want it off always
+        JsonResource::withoutWrapping();
+        // CommentResource::withoutWrapping();
     }
 }
