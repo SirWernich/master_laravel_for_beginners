@@ -45,6 +45,8 @@ return [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
+            // 'input_key' => 'api_token',     // the name of the param sent in the url
+            // 'storage_key' => 'api_token',   // the name of the field in the user table
         ],
     ],
 
