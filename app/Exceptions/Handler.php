@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Route;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -33,6 +35,14 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function( NotFoundHttpException $e, $request) {
+            if ($request->expectsJson()) {
+                return Route::respondWithRoute('api.fallback');
+            }
+
+            return parent::render($request, $e);
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });
