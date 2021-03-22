@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\BlogPost;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         BlogPost::class => 'App\Policies\BlogPostPolicy',
+        Comment::class => 'App\Policies\CommentPolicy',
         User::class => 'App\Policies\UserPolicy'
     ];
 
@@ -46,13 +48,13 @@ class AuthServiceProvider extends ServiceProvider
         // Gate::resource('posts', \App\Policies\BlogPostPolicy::class);
 
         // // "before" is always called before the others
-        Gate::before(function(User $user, $ability) {
-            if ($user->is_admin && in_array($ability, ['update', 'delete'])) {
-                return true;
-            }
+        // Gate::before(function(User $user, $ability) {
+        //     if ($user->is_admin && in_array($ability, ['update', 'delete'])) {
+        //         return true;
+        //     }
 
-            // don't return anything, that way it goes to the other gates
-        });
+        //     // don't return anything, that way it goes to the other gates
+        // });
 
         // // "after" is always called after the others
         // Gate::after(function(User $user, $ability) {
